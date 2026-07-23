@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مساعد روابط اليوتيوب للوالدة</title>
+    <style>
+        body {
+            font-family: Tahoma, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #333;
+            font-size: 22px;
+        }
+        p {
+            color: #666;
+            font-size: 14px;
+        }
+        input {
+            width: 90%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:active {
+            background-color: #219653;
+        }
+        .result-box {
+            margin-top: 20px;
+            display: none;
+        }
+        .video-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .open-btn {
+            background-color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>مساعد يوتيوب الآمن 🌸</h2>
+    <p>حطّي رابط الفيديو هنا عشان تعرفي وش داخله قبل ما تفتحيه:</p>
+    
+    <input type="text" id="urlInput" placeholder="الصقي الرابط هنا...">
+    <button onclick="checkVideo()">افحصي الرابط</button>
+
+    <div class="result-box" id="resultBox">
+        <div class="video-title" id="videoTitle"></div>
+        <img id="videoThumb" src="" alt="صورة الفيديو">
+        <button class="open-btn" onclick="openVideo()">شغلي الفيديو في اليوتيوب 📺</button>
+    </div>
+</div>
+
+<script>
+    let currentVideoUrl = "";
+
+    function checkVideo() {
+        let url = document.getElementById("urlInput").value.trim();
+        if (!url) {
+            alert("الرجاء إدخال رابط أولاً!");
+            return;
+        }
+
+        currentVideoUrl = url;
+        
+        let apiURL = `https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`;
+
+        fetch(apiURL)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("الرابط غير صحيح");
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById("videoTitle").innerText = data.title;
+                document.getElementById("videoThumb").src = data.thumbnail_url;
+                document.getElementById("resultBox").style.display = "block";
+            })
+            .catch(error => {
+                alert("عذراً، الرابط غير صحيح أو ليس فيديو يوتيوب صالحاً.");
+            });
+    }
+
+    function openVideo() {
+        if (currentVideoUrl) {
+            window.open(currentVideoUrl, "_blank");
+        }
+    }
+</script>
+
+</body>
+</html>
